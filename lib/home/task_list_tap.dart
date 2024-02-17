@@ -1,7 +1,10 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/home/task_list_item.dart';
 import 'package:todo_app/theme/my_theme.dart';
+
+import '../providers/app_config_provider.dart';
 
 class TaskListTab extends StatefulWidget {
   const TaskListTab({super.key});
@@ -13,33 +16,36 @@ class TaskListTab extends StatefulWidget {
 class _TaskListTabState extends State<TaskListTab> {
   @override
   Widget build(BuildContext context) {
-    final EasyInfiniteDateTimelineController _controller =
-        EasyInfiniteDateTimelineController();
-    DateTime? _focusDate = DateTime.now();
+    var provider = Provider.of<AppConfigProvider>(context);
+    EasyInfiniteDateTimelineController();
+    DateTime? focusDate = DateTime.now();
     return Container(
+      color: provider.isDarkMode()
+          ? MyTheme.backgroundDarkColor
+          : MyTheme.whiteColor,
       child: Column(
         children: [
           EasyDateTimeLine(
-            headerProps: const EasyHeaderProps(
+            headerProps: EasyHeaderProps(
                 monthStyle: TextStyle(
-              color: Colors.black,
+              color: provider.isDarkMode() ? Colors.white : Colors.black,
               fontSize: 15,
               fontWeight: FontWeight.bold,
             )),
             initialDate: DateTime.now(),
             onDateChange: (selectedDate) {
               //`selectedDate` the new date selected.
-              _focusDate = selectedDate;
+              focusDate = selectedDate;
             },
             activeColor: MyTheme.primaryColor,
-            locale: "en",
+            locale: provider.appLanguage == "en" ? "en" : "ar",
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Expanded(
             child: ListView.builder(itemBuilder: (context, index) {
-              return TaskListItem();
+              return const TaskListItem();
             }),
           )
         ],

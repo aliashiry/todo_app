@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/providers/app_config_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
@@ -16,26 +19,38 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<AppConfigProvider>(context);
     return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.all(12),
+      color: provider.isDarkMode()
+          ? MyTheme.backgroundDarkColor
+          : MyTheme.whiteColor,
+      // width: double.infinity,
+      margin: const EdgeInsets.all(5),
       child: Form(
         key: formKey,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'Add New Task',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontSize: 18,
-                      color: MyTheme.blackColor,
-                    ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                ),
+                child: Text(
+                  AppLocalizations.of(context)!.add_new_task,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontSize: 18,
+                        color: provider.isDarkMode()
+                            ? MyTheme.whiteColor
+                            : MyTheme.blackColor,
+                      ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextFormField(
+                  style: TextStyle(color: MyTheme.whiteColor),
                   onChanged: (text) {
                     title = text;
                   },
@@ -45,9 +60,14 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     }
                     return null;
                   },
-                  decoration: const InputDecoration(
-                    hintText: 'Enter Task Title',
-                  ),
+                  decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.enter_task_title,
+                      hintStyle: TextStyle(
+                        fontSize: 15,
+                        color: provider.isDarkMode()
+                            ? MyTheme.whiteColor
+                            : MyTheme.blackColor,
+                      )),
                 ),
               ),
               Padding(
@@ -63,14 +83,20 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                     return null;
                   },
                   maxLines: 4,
-                  decoration: const InputDecoration(
-                    hintText: 'please Enter Task description',
-                  ),
+                  decoration: InputDecoration(
+                      hintText:
+                          AppLocalizations.of(context)!.enter_task_description,
+                      hintStyle: TextStyle(
+                        fontSize: 15,
+                        color: provider.isDarkMode()
+                            ? MyTheme.whiteColor
+                            : MyTheme.blackColor,
+                      )),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Text('Select Data',
+                child: Text(AppLocalizations.of(context)!.select_time,
                     style: Theme.of(context).textTheme.titleSmall),
               ),
               Padding(
@@ -82,8 +108,8 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   child: Text(
                     '${selectedData.day}/${selectedData.month}/${selectedData.year}',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w400,
-                        ),
+                      fontWeight: FontWeight.w400,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -98,8 +124,13 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                       addTask();
                     },
                     child: Text(
-                      'Add',
-                      style: Theme.of(context).textTheme.titleLarge,
+                      AppLocalizations.of(context)!.add,
+                      style: TextStyle(
+                        color: provider.isDarkMode()
+                            ? MyTheme.whiteColor
+                            : MyTheme.blackColor,
+                        fontSize: 24,
+                      ),
                     )),
               ),
             ],
