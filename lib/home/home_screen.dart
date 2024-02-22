@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/home/add_task_bottomsheet.dart';
-import 'package:todo_app/home/settings_tap.dart';
-import 'package:todo_app/home/task_list_tap.dart';
+import 'package:todo_app/home/add_task_bottomsheet/add_task_bottomsheet.dart';
+import 'package:todo_app/home/settings_tap/settings_tap.dart';
+import 'package:todo_app/home/task_list_tap/task_list_tap.dart';
 import 'package:todo_app/providers/app_config_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
@@ -18,10 +18,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int selectedIndex = 0;
+  var selectedData = DateTime.now();
+  String title = '';
+  String description = '';
+  late AppConfigProvider provider;
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<AppConfigProvider>(context);
+    provider = Provider.of<AppConfigProvider>(context);
     return Scaffold(
       backgroundColor: provider.isDarkMode()
           ? MyTheme.backgroundDarkColor

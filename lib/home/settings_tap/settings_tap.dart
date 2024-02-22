@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/providers/app_config_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
-import '../settings/language_bottom_sheet.dart';
-import '../settings/theme_bottom_sheet.dart';
+import '../../settings/language_bottom_sheet.dart';
+import '../../settings/theme_bottom_sheet.dart';
 
 class SettingsTab extends StatefulWidget {
   const SettingsTab({super.key});
