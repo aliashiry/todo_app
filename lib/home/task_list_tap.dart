@@ -6,47 +6,66 @@ import 'package:todo_app/theme/my_theme.dart';
 
 import '../providers/app_config_provider.dart';
 
-class TaskListTab extends StatefulWidget {
+class TaskListTab extends StatelessWidget {
   const TaskListTab({super.key});
 
   @override
-  State<TaskListTab> createState() => _TaskListTabState();
-}
-
-class _TaskListTabState extends State<TaskListTab> {
-  @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
-    EasyInfiniteDateTimelineController();
-    DateTime? focusDate = DateTime.now();
+    if (provider.tasksList.isEmpty) {
+      provider.getAllTasksFromFireStore();
+    }
     return Container(
       color: provider.isDarkMode()
           ? MyTheme.backgroundDarkColor
-          : MyTheme.whiteColor,
+          : MyTheme.backgroundColor,
       child: Column(
         children: [
           EasyDateTimeLine(
-            headerProps: EasyHeaderProps(
-                monthStyle: TextStyle(
-              color: provider.isDarkMode() ? Colors.white : Colors.black,
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-            )),
-            initialDate: DateTime.now(),
-            onDateChange: (selectedDate) {
-              //`selectedDate` the new date selected.
-              focusDate = selectedDate;
+            headerProps: const EasyHeaderProps(
+                monthStyle: TextStyle(color: Colors.black)),
+            initialDate: provider.selectedDate,
+            onDateChange: (data) {
+              provider.changeSelectedData(data);
             },
-            activeColor: MyTheme.primaryColor,
-            locale: provider.appLanguage == "en" ? "en" : "ar",
+            activeColor: provider.isDarkMode()
+                ? MyTheme.primaryColor
+                : MyTheme.primaryColor,
+            dayProps: EasyDayProps(
+              todayHighlightStyle: TodayHighlightStyle.withBackground,
+              inactiveDayStyle: DayStyle(
+                dayStrStyle: TextStyle(
+                    color: provider.isDarkMode()
+                        ? MyTheme.whiteColor
+                        : MyTheme.blackColor),
+                monthStrStyle: TextStyle(
+                    color: provider.isDarkMode()
+                        ? MyTheme.whiteColor
+                        : MyTheme.blackColor),
+                dayNumStyle: TextStyle(
+                    color: provider.isDarkMode()
+                        ? MyTheme.whiteColor
+                        : MyTheme.blackColor),
+                decoration: BoxDecoration(
+                  color: provider.isDarkMode()
+                      ? MyTheme.blackDarkColor
+                      : MyTheme.whiteColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            locale: provider.appLanguage,
           ),
           const SizedBox(
             height: 10,
           ),
           Expanded(
-            child: ListView.builder(itemBuilder: (context, index) {
-              return const TaskListItem();
-            }),
+            child: ListView.builder(
+              itemBuilder: (context, index) {
+                return TaskListItem(task: provider.tasksList[index]);
+              },
+              itemCount: provider.tasksList.length,
+            ),
           )
         ],
       ),

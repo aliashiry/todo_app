@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/firebase/firebase_utils.dart';
+import 'package:todo_app/model/task.dart';
 import 'package:todo_app/providers/app_config_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
@@ -16,14 +18,14 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   var formKey = GlobalKey<FormState>();
   String title = '';
   String description = '';
+  late AppConfigProvider provider;
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<AppConfigProvider>(context);
+    provider = Provider.of<AppConfigProvider>(context);
     return Container(
-      color: provider.isDarkMode()
-          ? MyTheme.backgroundDarkColor
-          : MyTheme.whiteColor,
+      color:
+          provider.isDarkMode() ? MyTheme.blackDarkColor : MyTheme.whiteColor,
       // width: double.infinity,
       margin: const EdgeInsets.all(5),
       child: Form(
@@ -50,7 +52,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: TextFormField(
-                  style: TextStyle(color: MyTheme.whiteColor),
+                  style: TextStyle(color: MyTheme.blackColor),
                   onChanged: (text) {
                     title = text;
                   },
@@ -156,6 +158,15 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   }
 
   void addTask() {
-    if (formKey.currentState?.validate() == true) {}
+    if (formKey.currentState?.validate() == true) {
+      Task task =
+          Task(title: title, description: description, dateTime: selectedData);
+      FirebaseUtils.addTasksToFireStorage(task)
+          .timeout(const Duration(milliseconds: 500), onTimeout: () {
+        print('task added successfully');
+        provider.getAllTasksFromFireStore();
+        Navigator.pop(context);
+      });
+    }
   }
 }

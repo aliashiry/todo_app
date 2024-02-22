@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: provider.isDarkMode()
           ? MyTheme.backgroundDarkColor
-          : MyTheme.whiteColor,
+          : MyTheme.backgroundColor,
       extendBody: true,
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height * 0.19,
