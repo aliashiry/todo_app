@@ -27,7 +27,7 @@ class _LanguageBottomSheetState extends State<ThemeBottomSheet> {
         children: [
           InkWell(
             onTap: () {
-              provider.changeThemeMode(ThemeMode.dark);
+              provider.changeThemeMode();
             },
             child: provider.isDarkMode()
                 ? getSelectedItemWidget(AppLocalizations.of(context)!.dark)
@@ -38,7 +38,7 @@ class _LanguageBottomSheetState extends State<ThemeBottomSheet> {
           ),
           InkWell(
             onTap: () {
-              provider.changeThemeMode(ThemeMode.light);
+              provider.changeThemeMode();
             },
             child: provider.isDarkMode()
                 ? getUnselectedItemWidget(AppLocalizations.of(context)!.light)

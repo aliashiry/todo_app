@@ -18,9 +18,9 @@ class TaskListItem extends StatefulWidget {
 
 class _TaskListItemState extends State<TaskListItem> {
   var selectedData = DateTime.now();
+  var formKey = GlobalKey<FormState>();
 
   String title = '';
-
   String description = '';
 
   late AppConfigProvider provider;
@@ -30,7 +30,7 @@ class _TaskListItemState extends State<TaskListItem> {
     provider = Provider.of<AppConfigProvider>(context);
     return InkWell(
       onTap: () {
-        editTask();
+        // Navigator.pushNamed(context, EditTask.routeName);
       },
       child: Container(
         margin: const EdgeInsets.all(10),
@@ -88,26 +88,26 @@ class _TaskListItemState extends State<TaskListItem> {
                 ),
                 Expanded(
                     child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.task.title!,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.task.title!,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: MyTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
-                    ),
-                    Text(
-                      widget.task.description!,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        ),
+                        Text(
+                          widget.task.description!,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: provider.isDarkMode()
                                 ? MyTheme.whiteColor
                                 : MyTheme.blackColor,
                             fontSize: 20,
                           ),
-                    ),
-                  ],
-                )),
+                        ),
+                      ],
+                    )),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 7,
@@ -140,116 +140,156 @@ class _TaskListItemState extends State<TaskListItem> {
             child: Container(
               width: MediaQuery.of(context).size.width * 0.8,
               height: MediaQuery.of(context).size.height * 0.6,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.add_new_task,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontSize: 18,
-                            color: provider.isDarkMode()
-                                ? MyTheme.whiteColor
-                                : MyTheme.blackColor,
-                          ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextFormField(
-                      style: TextStyle(color: MyTheme.blackColor),
-                      onChanged: (text) {
-                        title = text;
-                      },
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'Please enter task title';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintText:
-                              AppLocalizations.of(context)!.enter_task_title,
-                          hintStyle: TextStyle(
-                            fontSize: 15,
-                            color: provider.isDarkMode()
-                                ? MyTheme.whiteColor
-                                : MyTheme.blackColor,
-                          )),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: TextFormField(
-                      onChanged: (text) {
-                        description = text;
-                      },
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'Please enter task description';
-                        }
-                        return null;
-                      },
-                      maxLines: 4,
-                      decoration: InputDecoration(
-                          hintText: AppLocalizations.of(context)!
-                              .enter_task_description,
-                          hintStyle: TextStyle(
-                            fontSize: 15,
-                            color: provider.isDarkMode()
-                                ? MyTheme.whiteColor
-                                : MyTheme.blackColor,
-                          )),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Text(AppLocalizations.of(context)!.select_time,
-                        style: Theme.of(context).textTheme.titleSmall),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: InkWell(
-                      onTap: () {
-                        showCalendar();
-                      },
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                      ),
                       child: Text(
-                        '${selectedData.day}/${selectedData.month}/${selectedData.year}',
-                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              fontWeight: FontWeight.w400,
-                            ),
+                        AppLocalizations.of(context)!.add_new_task,
                         textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontSize: 18,
+                              color: provider.isDarkMode()
+                                  ? MyTheme.blackColor
+                                  : MyTheme.whiteColor,
+                            ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MyTheme.primaryColor,
-                        ),
-                        onPressed: () {},
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextFormField(
+                        style: TextStyle(color: MyTheme.blackColor),
+                        onChanged: (text) {
+                          title = text;
+                        },
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'Please enter task title';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                            hintText:
+                                AppLocalizations.of(context)!.enter_task_title,
+                            hintStyle: TextStyle(
+                              fontSize: 15,
+                              color: provider.isDarkMode()
+                                  ? MyTheme.blackColor
+                                  : MyTheme.whiteColor,
+                            )),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: TextFormField(
+                        onChanged: (text) {
+                          description = text;
+                        },
+                        validator: (text) {
+                          if (text == null || text.isEmpty) {
+                            return 'Please enter task description';
+                          }
+                          return null;
+                        },
+                        maxLines: 4,
+                        decoration: InputDecoration(
+                            hintText: AppLocalizations.of(context)!
+                                .enter_task_description,
+                            hintStyle: TextStyle(
+                              fontSize: 15,
+                              color: provider.isDarkMode()
+                                  ? MyTheme.blackColor
+                                  : MyTheme.whiteColor,
+                            )),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        AppLocalizations.of(context)!.select_time,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: provider.isDarkMode()
+                                  ? MyTheme.blackColor
+                                  : MyTheme.whiteColor,
+                              fontSize: 15,
+                            ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: InkWell(
+                        onTap: () {
+                          showCalendar();
+                        },
                         child: Text(
-                          AppLocalizations.of(context)!.save_changes,
-                          style: TextStyle(
-                            color: provider.isDarkMode()
-                                ? MyTheme.whiteColor
-                                : MyTheme.blackColor,
-                            fontSize: 24,
+                          '${selectedData.day}/${selectedData.month}/${selectedData.year}',
+                          style:
+                              Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: provider.isDarkMode()
+                                        ? MyTheme.blackColor
+                                        : MyTheme.whiteColor,
+                                  ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MyTheme.primaryColor,
                           ),
-                        )),
-                  ),
-                ],
+                          onPressed: () {
+                            String taskName = title;
+                            String taskDesc = description;
+                            var time = selectedData;
+                            updateTask(
+                                task: Task(
+                                    title: taskName,
+                                    description: taskDesc,
+                                    dateTime: time));
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.save_changes,
+                            style: TextStyle(
+                              color: provider.isDarkMode()
+                                  ? MyTheme.blackColor
+                                  : MyTheme.whiteColor,
+                              fontSize: 24,
+                            ),
+                          )),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         );
       },
     );
+  }
+
+  void updateTask({required Task task}) {
+    if (formKey.currentState?.validate() == true) {
+      Task task =
+          Task(title: title, description: description, dateTime: selectedData);
+      // FirebaseFirestore.instance.collection(Task.collectionName).doc(
+      //   widget.task.id,
+      // ).update({''
+      //     'id': task.id,
+      //   'title': task.title,
+      //   'description': task.description,
+      //   'dateTime': task.dateTime,
+      //
+      // });
+      FirebaseUtils.updateTasksInFireStorage(task);
+    }
   }
 
   void showCalendar() async {

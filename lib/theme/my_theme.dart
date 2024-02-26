@@ -39,6 +39,7 @@ class MyTheme {
         selectedItemColor: primaryColor,
         unselectedItemColor: greyColor,
         backgroundColor: Colors.transparent,
+        showUnselectedLabels: false,
         elevation: 0,
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -92,9 +93,10 @@ class MyTheme {
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         selectedItemColor: primaryColor,
-        unselectedItemColor: greyColor,
-        backgroundColor: Colors.transparent,
-      ),
+      unselectedItemColor: greyColor,
+      backgroundColor: Colors.transparent,
+      showUnselectedLabels: false,
+    ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         shape: StadiumBorder(
           side: BorderSide(
