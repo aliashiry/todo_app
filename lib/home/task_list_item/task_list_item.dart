@@ -31,6 +31,7 @@ class _TaskListItemState extends State<TaskListItem> {
     return InkWell(
       onTap: () {
         // Navigator.pushNamed(context, EditTask.routeName);
+        editTask();
       },
       child: Container(
         margin: const EdgeInsets.all(10),
@@ -136,8 +137,14 @@ class _TaskListItemState extends State<TaskListItem> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: provider.isDarkMode()
+              ? MyTheme.backgroundDarkColor
+              : MyTheme.whiteColor,
           content: SingleChildScrollView(
             child: Container(
+              // color: provider.isDarkMode()
+              //     ? MyTheme.backgroundDarkColor
+              //     : MyTheme.backgroundColor,
               width: MediaQuery.of(context).size.width * 0.8,
               height: MediaQuery.of(context).size.height * 0.6,
               child: Form(
@@ -153,10 +160,10 @@ class _TaskListItemState extends State<TaskListItem> {
                         AppLocalizations.of(context)!.add_new_task,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontSize: 18,
+                          fontSize: 18,
                               color: provider.isDarkMode()
-                                  ? MyTheme.blackColor
-                                  : MyTheme.whiteColor,
+                                  ? MyTheme.whiteColor
+                                  : MyTheme.blackColor,
                             ),
                       ),
                     ),
@@ -179,8 +186,8 @@ class _TaskListItemState extends State<TaskListItem> {
                             hintStyle: TextStyle(
                               fontSize: 15,
                               color: provider.isDarkMode()
-                                  ? MyTheme.blackColor
-                                  : MyTheme.whiteColor,
+                                  ? MyTheme.whiteColor
+                                  : MyTheme.blackColor,
                             )),
                       ),
                     ),
@@ -203,8 +210,8 @@ class _TaskListItemState extends State<TaskListItem> {
                             hintStyle: TextStyle(
                               fontSize: 15,
                               color: provider.isDarkMode()
-                                  ? MyTheme.blackColor
-                                  : MyTheme.whiteColor,
+                                  ? MyTheme.whiteColor
+                                  : MyTheme.blackColor,
                             )),
                       ),
                     ),
@@ -213,9 +220,9 @@ class _TaskListItemState extends State<TaskListItem> {
                       child: Text(
                         AppLocalizations.of(context)!.select_time,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                              color: provider.isDarkMode()
-                                  ? MyTheme.blackColor
-                                  : MyTheme.whiteColor,
+                          color: provider.isDarkMode()
+                                  ? MyTheme.whiteColor
+                                  : MyTheme.blackColor,
                               fontSize: 15,
                             ),
                       ),
@@ -230,10 +237,10 @@ class _TaskListItemState extends State<TaskListItem> {
                           '${selectedData.day}/${selectedData.month}/${selectedData.year}',
                           style:
                               Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w400,
                                     color: provider.isDarkMode()
-                                        ? MyTheme.blackColor
-                                        : MyTheme.whiteColor,
+                                        ? MyTheme.whiteColor
+                                        : MyTheme.blackColor,
                                   ),
                           textAlign: TextAlign.center,
                         ),
@@ -259,8 +266,8 @@ class _TaskListItemState extends State<TaskListItem> {
                             AppLocalizations.of(context)!.save_changes,
                             style: TextStyle(
                               color: provider.isDarkMode()
-                                  ? MyTheme.blackColor
-                                  : MyTheme.whiteColor,
+                                  ? MyTheme.whiteColor
+                                  : MyTheme.blackColor,
                               fontSize: 24,
                             ),
                           )),

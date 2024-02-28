@@ -12,16 +12,14 @@ import 'package:todo_app/providers/app_config_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
 import 'home/home_screen.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   final isDark = sharedPreferences.getBool('is_dark') ?? false;
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await FirebaseFirestore.instance.disableNetwork();
+  await FirebaseFirestore.instance.enableNetwork();
   FirebaseFirestore.instance.settings =
       const Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
   await Future.delayed(const Duration(seconds: 1));
@@ -33,12 +31,10 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final bool isDark;
-
   MyApp({
     super.key,
     required this.isDark,
   });
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
