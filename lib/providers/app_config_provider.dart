@@ -1,17 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/firebase/firebase_utils.dart';
 import 'package:todo_app/model/task.dart';
 
 class AppConfigProvider extends ChangeNotifier {
-  AppConfigProvider(bool isDark) {
-    if (isDark) {
-      appTheme = ThemeMode.dark;
-    } else {
-      appTheme = ThemeMode.light;
-    }
-  }
 
   List<Task> tasksList = [];
   DateTime selectedDate = DateTime.now();
@@ -26,15 +18,11 @@ class AppConfigProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeThemeMode() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (appTheme == ThemeMode.light) {
-      appTheme = ThemeMode.dark;
-      sharedPreferences.setBool('is_dark', true);
+  void changeThemeMode(ThemeMode newThemeMode) {
+    if (appTheme == newThemeMode) {
       return;
     }
-    appTheme = ThemeMode.light;
-    sharedPreferences.setBool('is_dark', false);
+    appTheme = newThemeMode;
     notifyListeners();
   }
 

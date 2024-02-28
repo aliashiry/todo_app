@@ -17,9 +17,6 @@ class _LanguageBottomSheetState extends State<ThemeBottomSheet> {
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
     return Container(
-      color: provider.isDarkMode()
-          ? MyTheme.backgroundDarkColor
-          : MyTheme.whiteColor,
       padding: const EdgeInsets.all(30),
       //margin: const EdgeInsets.all(30),
       child: Column(
@@ -27,7 +24,7 @@ class _LanguageBottomSheetState extends State<ThemeBottomSheet> {
         children: [
           InkWell(
             onTap: () {
-              provider.changeThemeMode();
+              provider.changeThemeMode(ThemeMode.dark);
             },
             child: provider.isDarkMode()
                 ? getSelectedItemWidget(AppLocalizations.of(context)!.dark)
@@ -38,7 +35,7 @@ class _LanguageBottomSheetState extends State<ThemeBottomSheet> {
           ),
           InkWell(
             onTap: () {
-              provider.changeThemeMode();
+              provider.changeThemeMode(ThemeMode.light);
             },
             child: provider.isDarkMode()
                 ? getUnselectedItemWidget(AppLocalizations.of(context)!.light)
@@ -56,13 +53,13 @@ class _LanguageBottomSheetState extends State<ThemeBottomSheet> {
         Text(
           text,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: MyTheme.blackColor,
+            color: MyTheme.primaryColor,
               ),
         ),
         Icon(
           Icons.check,
           size: 30,
-          color: MyTheme.blackColor,
+          color: MyTheme.primaryColor,
         ),
       ],
     );

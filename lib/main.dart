@@ -7,7 +7,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/home/auth/login_screen/login_screen.dart';
 import 'package:todo_app/home/auth/register_screen/register_screen.dart';
-import 'package:todo_app/home/edit_task.dart';
 import 'package:todo_app/providers/app_config_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
@@ -25,16 +24,10 @@ void main() async {
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
   runApp(ChangeNotifierProvider(
-      create: (context) => AppConfigProvider(isDark),
-      child: MyApp(isDark: isDark)));
+      create: (context) => AppConfigProvider(), child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  final bool isDark;
-  MyApp({
-    super.key,
-    required this.isDark,
-  });
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -43,10 +36,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      initialRoute: LoginScreen.routeName,
+      initialRoute: HomeScreen.routeName,
       routes: {
         HomeScreen.routeName: (context) => const HomeScreen(),
-        EditTask.routeName: (context) => const EditTask(),
         RegisterScreen.routeName: (context) => RegisterScreen(),
         LoginScreen.routeName: (context) => LoginScreen(),
       },

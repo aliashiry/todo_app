@@ -59,9 +59,10 @@ class MyTheme {
         // ),
       ),
       bottomSheetTheme: BottomSheetThemeData(
+          elevation: 0,
           backgroundColor: whiteColor,
           shape: RoundedRectangleBorder(
-            side: BorderSide(color: whiteColor),
+            side: BorderSide(color: greyColor),
             borderRadius: const BorderRadius.vertical(
               top: Radius.circular(20),
             ),

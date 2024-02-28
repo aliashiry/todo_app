@@ -9,17 +9,21 @@ class FirebaseUtils {
                 Task.fromFireStore(snapshot.data()!),
             toFirestore: (task, options) => task.toFireStore());
   }
+
   static Future<void> addTasksToFireStorage(Task task) {
     var taskCollectionRef = getTasksCollection();
     DocumentReference<Task> taskDocRef = taskCollectionRef.doc();
     task.id = taskDocRef.id; // out id generated
     return taskDocRef.set(task);
-
   }
+
   static Future<void> deleteTasksFromFireStorage(Task task) {
     return getTasksCollection().doc(task.id).delete();
   }
-  static Future<void> updateTasksInFireStorage(Task task) async {
-    await FirebaseFirestore.instance.collection(Task.collectionName).doc(task.id).update(task.toFireStore());
+
+  static Future<void> updateTaskOnFirestore(Task task) {
+    var collectionRef = getTasksCollection();
+    var docRef = collectionRef.doc(task.id);
+    return docRef.update(task.toFireStore());
   }
 }

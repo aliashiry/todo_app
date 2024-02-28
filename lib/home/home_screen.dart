@@ -39,24 +39,22 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 1),
         height: MediaQuery.of(context).size.height * 0.08,
-        shadowColor: provider.isDarkMode()
-            ? MyTheme.backgroundDarkColor
-            : MyTheme.whiteColor,
+        shadowColor:
+            provider.isDarkMode() ? MyTheme.blackDarkColor : MyTheme.whiteColor,
         shape: const CircularNotchedRectangle(),
         notchMargin: 10,
-        color: provider.isDarkMode()
-            ? MyTheme.backgroundDarkColor
-            : MyTheme.whiteColor,
+        color:
+            provider.isDarkMode() ? MyTheme.blackDarkColor : MyTheme.whiteColor,
         child: BottomAppBar(
-          color: provider.isDarkMode()
-              ? MyTheme.backgroundDarkColor
-              : Colors.white12,
+          color: provider.isDarkMode() ? MyTheme.blackDarkColor : Colors.white12,
           padding: const EdgeInsets.symmetric(horizontal: 0),
           elevation: 0,
           notchMargin: 10,
           child: BottomNavigationBar(
+            elevation: 0,
             backgroundColor: Colors.transparent,
             currentIndex: selectedIndex,
             onTap: (index) {
