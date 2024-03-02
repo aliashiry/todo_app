@@ -25,6 +25,7 @@ class _TaskListItemState extends State<TaskListItem> {
   late DateTime taskSelectedTime;
   DateTime initDate = DateTime.now();
   DateTime initTime = DateTime.now();
+  var id;
   late AppConfigProvider provider;
 
   @override
@@ -133,15 +134,15 @@ class _TaskListItemState extends State<TaskListItem> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          widget.task.title!,
+                    Text(
+                      widget.task.title!,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: MyTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
                     ),
-                        Text(
-                          widget.task.description!,
+                    Text(
+                      widget.task.description!,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: provider.isDarkMode()
                                 ? MyTheme.whiteColor
@@ -149,7 +150,7 @@ class _TaskListItemState extends State<TaskListItem> {
                             fontSize: 20,
                           ),
                     ),
-                      ],
+                  ],
                     )),
                 Container(
                   padding: const EdgeInsets.symmetric(
@@ -177,8 +178,8 @@ class _TaskListItemState extends State<TaskListItem> {
   editTask(Task task) {
     var selectedData = DateTime.now();
     taskTitleController.text = task.title ?? '';
-    taskDescriptionController.text =
-        task.description ?? ''; //################################
+    taskDescriptionController.text = task.description ?? '';
+    id = task.id;
     showDialog(
       context: context,
       builder: (context) {
@@ -328,25 +329,19 @@ class _TaskListItemState extends State<TaskListItem> {
   void updateTask({required Task task}) async {
     if (formKey.currentState?.validate() == true) {
       // تحديث البيانات الجديدة للمهمة
+
       Task updatedTask = Task(
         title: taskTitleController.text,
         description: taskDescriptionController.text,
         dateTime: selectedData,
+        id: id,
       );
-
       try {
-        // تحديث المهمة على Firebase
-        await FirebaseUtils.updateTaskOnFirestore(updatedTask);
-
-        // إغلاق الـ AlertDialog بعد التحديث بنجاح
+        await FirebaseUtils.updateTask(updatedTask);
         Navigator.of(context).pop();
-
-        // تحديث قائمة المهام بعد التحديث
         provider.getAllTasksFromFireStore();
       } catch (error) {
-        // عرض رسالة خطأ إذا فشل التحديث
         print('Error updating task: $error');
-        // يمكنك إضافة رسالة للمستخدم هنا إذا كنت ترغب
       }
     }
   }

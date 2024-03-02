@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_app/home/auth/custom_text_form_field.dart';
-import 'package:todo_app/home/home_screen.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -107,10 +106,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             if (text == null || text.trim().isEmpty) {
                               return 'please enter password-confirmation';
                             }
-                            if ( passwordController.text != confirmController.text) {
-                              return "password doesn't match";
-                              //  print('exit the condation password');
-                            }
+                            // if ( passwordController.text != confirmController.text) {
+                            //   return "password doesn't match";
+                            //   //  print('exit the condation password');
+                            // }
                             return null;
                           },
                         ),
@@ -147,15 +146,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
+// Users  users = Users(id: credential.user!.uid, name: nameController.text, email: emailController.text);
+  // FirebaseUtils.addUserToFireStorage(users);
   void register() async {
-    if (formKey.currentState?.validate() == true) {
+    if (formKey.currentState!.validate() == true) {
+      print('start');
       try {
-        var credential =
+        print('start 2');
+        final credential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
-        print('Registration successful');
+        print('register successfully');
         print(credential.user?.uid ?? '');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
@@ -166,7 +169,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       } catch (e) {
         print(e.toString());
       }
-     // Navigator.pushNamed(context, HomeScreen.routeName);
     }
   }
 }

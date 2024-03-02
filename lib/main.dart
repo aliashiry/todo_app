@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_app/home/auth/login_screen/login_screen.dart';
 import 'package:todo_app/home/auth/register_screen/register_screen.dart';
 import 'package:todo_app/providers/app_config_provider.dart';
@@ -13,12 +12,10 @@ import 'package:todo_app/theme/my_theme.dart';
 import 'home/home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  final isDark = sharedPreferences.getBool('is_dark') ?? false;
+ // FirebaseFirestore.instance.clearPersistence();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp();
-  await FirebaseFirestore.instance.enableNetwork();
   FirebaseFirestore.instance.settings =
       const Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
   await Future.delayed(const Duration(seconds: 1));
@@ -36,7 +33,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      initialRoute: HomeScreen.routeName,
+      initialRoute: LoginScreen.routeName,
       routes: {
         HomeScreen.routeName: (context) => const HomeScreen(),
         RegisterScreen.routeName: (context) => RegisterScreen(),

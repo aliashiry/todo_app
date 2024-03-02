@@ -68,7 +68,7 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
     return Text(
       text,
       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: MyTheme.blackColor,
+            color: MyTheme.whiteColor,
           ),
     );
   }

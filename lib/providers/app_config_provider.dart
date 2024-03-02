@@ -4,7 +4,6 @@ import 'package:todo_app/firebase/firebase_utils.dart';
 import 'package:todo_app/model/task.dart';
 
 class AppConfigProvider extends ChangeNotifier {
-
   List<Task> tasksList = [];
   DateTime selectedDate = DateTime.now();
   String appLanguage = 'en';
