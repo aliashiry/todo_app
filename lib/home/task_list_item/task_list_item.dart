@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/firebase/firebase_utils.dart';
 import 'package:todo_app/model/task.dart';
 import 'package:todo_app/providers/app_config_provider.dart';
+import 'package:todo_app/providers/auth_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
 class TaskListItem extends StatefulWidget {
@@ -27,6 +28,7 @@ class _TaskListItemState extends State<TaskListItem> {
   DateTime initTime = DateTime.now();
   var id;
   late AppConfigProvider provider;
+  late AuthProviders authProvider;
 
   @override
   void initState() {
@@ -71,6 +73,7 @@ class _TaskListItemState extends State<TaskListItem> {
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<AppConfigProvider>(context);
+    authProvider = Provider.of<AuthProviders>(context);
     return InkWell(
       onTap: () {
         // Navigator.pushNamed(context, EditTask.routeName);
@@ -95,10 +98,12 @@ class _TaskListItemState extends State<TaskListItem> {
                 borderRadius: BorderRadius.circular(25),
                 onPressed: (context) {
                   // delete task
-                  FirebaseUtils.deleteTasksFromFireStorage(widget.task).timeout(
-                      const Duration(milliseconds: 500), onTimeout: () {
+                  FirebaseUtils.deleteTasksFromFireStorage(
+                          widget.task, authProvider.currentUser!.id!)
+                      .then((value) {
                     print('task deleted successfully');
-                    provider.getAllTasksFromFireStore();
+                    provider.getAllTasksFromFireStore(
+                        authProvider.currentUser!.id!);
                   });
                 },
                 backgroundColor: MyTheme.redColor,
@@ -337,9 +342,10 @@ class _TaskListItemState extends State<TaskListItem> {
         id: id,
       );
       try {
-        await FirebaseUtils.updateTask(updatedTask);
+        await FirebaseUtils.updateTask(
+            updatedTask, authProvider.currentUser!.id!);
         Navigator.of(context).pop();
-        provider.getAllTasksFromFireStore();
+        provider.getAllTasksFromFireStore(authProvider.currentUser!.id!);
       } catch (error) {
         print('Error updating task: $error');
       }

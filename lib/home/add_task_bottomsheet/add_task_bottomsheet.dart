@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/dialog_utils.dart';
 import 'package:todo_app/firebase/firebase_utils.dart';
 import 'package:todo_app/model/task.dart';
 import 'package:todo_app/providers/app_config_provider.dart';
+import 'package:todo_app/providers/auth_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
@@ -159,12 +161,31 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
 
   void addTask() {
     if (formKey.currentState?.validate() == true) {
+      var authProvider = Provider.of<AuthProviders>(context, listen: false);
+      DialogUtils.showMessage(context: context, message: 'Loading...');
       Task task =
           Task(title: title, description: description, dateTime: selectedData);
-      FirebaseUtils.addTasksToFireStorage(task)
-          .timeout(const Duration(milliseconds: 500), onTimeout: () {
+      FirebaseUtils.addTasksToFireStorage(task, authProvider.currentUser!.id!)
+          .then((value) {
         print('task added successfully');
-        provider.getAllTasksFromFireStore();
+        //   Navigator.pop(context);
+        DialogUtils.hideDialog(context);
+        DialogUtils.showMessage(
+            context: context,
+            message: 'task added successfully',
+            title: 'success',
+            posActionName: 'ok ',
+            posAction: () {
+              Navigator.pop(context);
+            });
+        provider.getAllTasksFromFireStore(authProvider.currentUser!.id!);
+        // Navigator.pop(context);
+      }).timeout(const Duration(milliseconds: 500), onTimeout: () {
+        DialogUtils.showMessage(
+            context: context, message: 'task added successfully');
+        DialogUtils.hideDialog(context);
+        print('task added successfully');
+        provider.getAllTasksFromFireStore(authProvider.currentUser!.id!);
         Navigator.pop(context);
       });
     }

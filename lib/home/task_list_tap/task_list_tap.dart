@@ -2,6 +2,7 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/home/task_list_item/task_list_item.dart';
+import 'package:todo_app/providers/auth_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
 import '../../providers/app_config_provider.dart';
@@ -12,8 +13,9 @@ class TaskListTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<AppConfigProvider>(context);
+    var authProvider = Provider.of<AuthProviders>(context);
     if (provider.tasksList.isEmpty) {
-      provider.getAllTasksFromFireStore();
+      provider.getAllTasksFromFireStore(authProvider.currentUser!.id!);
     }
     return Container(
       color: provider.isDarkMode()
@@ -26,7 +28,7 @@ class TaskListTab extends StatelessWidget {
                 monthStyle: TextStyle(color: Colors.black)),
             initialDate: provider.selectedDate,
             onDateChange: (data) {
-              provider.changeSelectedData(data);
+              provider.changeSelectedData(data, authProvider.currentUser!.id!);
             },
             activeColor: provider.isDarkMode()
                 ? MyTheme.primaryColor

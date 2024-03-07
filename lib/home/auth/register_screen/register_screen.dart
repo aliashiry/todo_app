@@ -1,173 +1,243 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/dialog_utils.dart';
+import 'package:todo_app/firebase/firebase_utils.dart';
 import 'package:todo_app/home/auth/custom_text_form_field.dart';
+import 'package:todo_app/home/auth/login_screen/login_screen.dart';
+import 'package:todo_app/home/home_screen.dart';
+import 'package:todo_app/model/user.dart';
+import 'package:todo_app/providers/auth_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
 class RegisterScreen extends StatefulWidget {
-  static const String routeName = "register screen";
-
-  RegisterScreen({super.key});
+  static const String routeName = 'register_screen';
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController nameController = TextEditingController();
+  TextEditingController nameController = TextEditingController(text: 'Ali');
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController emailController =
+      TextEditingController(text: 'ali@gmail.com');
 
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordController =
+      TextEditingController(text: '123456');
 
-  TextEditingController confirmController = TextEditingController();
+  TextEditingController confirmPasswordController =
+      TextEditingController(text: '123456');
 
-  var formKey = GlobalKey<FormState>();
+  var formkey = GlobalKey<FormState>();
+  bool obscureText = true;
+  bool obscureText1 = true;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(
-            color: MyTheme.whiteColor,
-            child: Image.asset(
-              'assets/images/main_background.png',
-              fit: BoxFit.fill,
-              width: double.infinity,
-              height: double.infinity,
-            )),
-        Scaffold(
+    return Stack(children: [
+      Container(
+        color: MyTheme.whiteColor,
+        child: Image.asset(
+          'assets/images/main_background.png',
+          width: double.infinity,
+          height: double.infinity,
+          fit: BoxFit.fill,
+        ),
+      ),
+      Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
-            title: Text(
-              'Create Account',
-              style: Theme.of(context).textTheme.titleLarge,
+            leading: BackButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+              },
             ),
-            centerTitle: true,
             backgroundColor: Colors.transparent,
+            title: Text('Create Account'),
+            centerTitle: true,
           ),
           body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Form(
-                  key: formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.22),
-                        CustomTextFormField(
-                          label: 'User Name',
-                          controller: nameController,
-                          validator: (text) {
-                            if (text == null || text.isEmpty) {
-                              return 'please enter a user name';
-                            }
-                            return null;
+            child: Column(children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.23,
+              ),
+              Form(
+                key: formkey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    CustomTextFormField(
+                      lableText: 'User Name',
+                      controller: nameController,
+                      validator: (name) {
+                        if (name == null || name.trim().isEmpty) {
+                          return 'Please Enter User Name';
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomTextFormField(
+                      lableText: 'Email',
+                      keyboardType: TextInputType.emailAddress,
+                      controller: emailController,
+                      validator: (email) {
+                        if (email!.trim().isEmpty) {
+                          return 'Please Enter Email';
+                        }
+                        bool emailValid = RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(email);
+                        if (!emailValid) {
+                          return 'Please enter valid email';
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomTextFormField(
+                      suffixIcon: InkWell(
+                          onTap: () {
+                            obscureText == true
+                                ? obscureText = false
+                                : obscureText = true;
+                            setState(() {});
                           },
-                        ),
-                        CustomTextFormField(
-                          label: 'Email',
-                          keyboardType: TextInputType.emailAddress,
-                          controller: emailController,
-                          validator: (text) {
-                            if (text == null || text.isEmpty) {
-                              return 'please enter a email';
-                            }
-                            bool emailValid = RegExp(
-                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(text);
-                            if (!emailValid) {
-                              return 'please enter a valid email';
-                            }
-                            return null;
+                          child: Icon(Icons.remove_red_eye_outlined)),
+                      // IconButton(
+                      //     onPressed: () {
+                      //       obscureText == true
+                      //           ? obscureText = false
+                      //           : obscureText = true;
+                      //       setState(() {});
+                      //     },
+                      //     icon: Icon(Icons.remove_red_eye_outlined,)),
+                      obscureText: obscureText,
+                      lableText: 'Password',
+                      keyboardType: TextInputType.phone,
+                      controller: passwordController,
+                      validator: (password) {
+                        if (password == null || password.trim().isEmpty) {
+                          return 'Please Enter Password';
+                        }
+                        if (password.length < 6) {
+                          return 'Password Should be at least  6 chars. ';
+                        }
+                        return null;
+                      },
+                    ),
+                    CustomTextFormField(
+                      obscureText: obscureText1,
+                      lableText: 'Confirm Password',
+                      keyboardType: TextInputType.phone,
+                      controller: confirmPasswordController,
+                      validator: (confirm) {
+                        if (confirm == null || confirm.trim().isEmpty) {
+                          return 'Please Enter ConfirmPassword';
+                        }
+                        if (confirm != passwordController.text) {
+                          return 'Invalid ConfirmPassword';
+                        }
+                        return null;
+                      },
+                      suffixIcon: InkWell(
+                          onTap: () {
+                            obscureText1 == true
+                                ? obscureText1 = false
+                                : obscureText1 = true;
+                            setState(() {});
                           },
+                          child: Icon(Icons.remove_red_eye_outlined)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue,
                         ),
-                        CustomTextFormField(
-                          label: 'Password',
-                          keyboardType: TextInputType.number,
-                          controller: passwordController,
-                          validator: (text) {
-                            if (text == null || text.trim().isEmpty) {
-                              return 'please enter a password';
-                            }
-                            if (text.length < 6) {
-                              return 'password must be at least 6 characters';
-                            }
-                            return null;
-                          },
-                        ),
-                        CustomTextFormField(
-                          label: 'Confirm Password',
-                          keyboardType: TextInputType.number,
-                          controller: confirmController,
-                          validator: (text) {
-                            if (text == null || text.trim().isEmpty) {
-                              return 'please enter password-confirmation';
-                            }
-                            // if ( passwordController.text != confirmController.text) {
-                            //   return "password doesn't match";
-                            //   //  print('exit the condation password');
-                            // }
-                            return null;
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                            ),
-                            onPressed: () {
-                              register();
-
-                            },
-                            child: Text(
-                              'Create Account',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
+                        onPressed: () {
+                          register();
+                        },
+                        child: Text(
+                          'Create Account',
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
                                     fontSize: 20,
                                   ),
-                            ),
-                          ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        )
-      ],
-    );
+              ),
+            ]),
+          ))
+    ]);
   }
 
-// Users  users = Users(id: credential.user!.uid, name: nameController.text, email: emailController.text);
-  // FirebaseUtils.addUserToFireStorage(users);
   void register() async {
-    if (formKey.currentState!.validate() == true) {
-      print('start');
+    if (formkey.currentState!.validate() == true) {
+      /// register
+      /// todo: show loading
+      // await Future.delayed(Duration(seconds: 2));
       try {
-        print('start 2');
+        DialogUtils.showLoading(context: context, message: 'Loading...');
         final credential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
-        print('register successfully');
-        print(credential.user?.uid ?? '');
+        MyUser myUser = MyUser(
+            id: credential.user?.uid ?? '',
+            name: nameController.text,
+            email: emailController.text);
+        await FirebaseUtils.addUserToFireStore(myUser);
+        var authProvider = Provider.of<AuthProviders>(context, listen: false);
+        authProvider.updateUser(myUser);
+        // todo : hide loading
+        DialogUtils.hideDialog(context);
+        // todo : show message
+        DialogUtils.showMessage(
+            context: context,
+            message: 'Account Created Successfully',
+            title: "success",
+            posActionName: 'OK',
+            posAction: () {
+              Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+            });
+        // todo : navigate to login screen
+        //  Navigator.pushReplacementNamed(context, LoginScreen.routeName);
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
-          print('The password provided is too weak.');
+          // todo : hide loading
+          DialogUtils.hideDialog(context);
+          // todo : show message
+          DialogUtils.showMessage(
+            context: context,
+            message: 'The password provided is too weak',
+            title: 'Error',
+            posActionName: 'OK',
+          );
         } else if (e.code == 'email-already-in-use') {
-          print('The account already exists for that email.');
+          // todo : hide loading
+          DialogUtils.hideDialog(context);
+          // todo : show message
+          DialogUtils.showMessage(
+            context: context,
+            message: 'The account already exists for that email.',
+            title: 'Error',
+            posActionName: 'OK',
+          );
         }
       } catch (e) {
-        print(e.toString());
+        // todo : hide loading
+        DialogUtils.hideDialog(context);
+        // todo : show message
+        DialogUtils.showMessage(
+          context: context,
+          message: '${e.toString()}',
+          title: 'Error',
+          posActionName: 'OK',
+        );
       }
     }
   }

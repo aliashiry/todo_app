@@ -1,14 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_app/dialog_utils.dart';
+import 'package:todo_app/firebase/firebase_utils.dart';
 import 'package:todo_app/home/auth/custom_text_form_field.dart';
 import 'package:todo_app/home/auth/register_screen/register_screen.dart';
 import 'package:todo_app/home/home_screen.dart';
+import 'package:todo_app/providers/auth_provider.dart';
 import 'package:todo_app/theme/my_theme.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const String routeName = "login screen";
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailController =
+      TextEditingController(text: 'ali@gmail.com');
+
+  TextEditingController passwordController =
+      TextEditingController(text: '123456');
+  bool obscureText = true;
 
   var formKey = GlobalKey<FormState>();
 
@@ -58,11 +72,11 @@ class LoginScreen extends StatelessWidget {
                                     )),
                           ),
                           CustomTextFormField(
-                            label: 'Email',
+                            lableText: 'Email',
                             keyboardType: TextInputType.emailAddress,
                             controller: emailController,
                             validator: (text) {
-                              if (text == null || text.isEmpty) {
+                              if (text == null || text.trim().isEmpty) {
                                 return 'please enter a email';
                               }
                               bool emailValid = RegExp(
@@ -75,11 +89,20 @@ class LoginScreen extends StatelessWidget {
                             },
                           ),
                           CustomTextFormField(
-                            label: 'Password',
+                            lableText: 'Password',
+                            obscureText: obscureText,
+                            suffixIcon: InkWell(
+                                onTap: () {
+                                  obscureText == true
+                                      ? obscureText = false
+                                      : obscureText = true;
+                                  setState(() {});
+                                },
+                                child: Icon(Icons.remove_red_eye_outlined)),
                             keyboardType: TextInputType.number,
                             controller: passwordController,
                             validator: (text) {
-                              if (text == null || text.isEmpty) {
+                              if (text == null || text.trim().isEmpty) {
                                 return 'please enter a password';
                               }
                               if (text.length < 6) {
@@ -158,20 +181,66 @@ class LoginScreen extends StatelessWidget {
   void login() async {
     if (formKey.currentState?.validate() == true) {
       try {
+        // todo : show loading
+        DialogUtils.showLoading(context: context, message: "Loading...");
         final credential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(
                 email: emailController.text, password: passwordController.text);
+        var user = await FirebaseUtils.readUserFromFireStore(
+            credential.user?.uid ?? '');
+        if (user == null) {
+          return;
+        }
+        var authProvider = Provider.of<AuthProviders>(context, listen: false);
+        authProvider.updateUser(user);
+        // todo : hide loading
+        DialogUtils.hideDialog(context);
+        // todo : show message
+        DialogUtils.showMessage(
+            context: context,
+            message: 'Login Successfully',
+            title: "success",
+            posActionName: 'OK',
+            posAction: () {
+              Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+            });
         print('Login successful');
         print(credential.user?.uid ?? '');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
+          // todo : hide loading
+          DialogUtils.hideDialog(context);
+          // todo : show message
+          DialogUtils.showMessage(
+            context: context,
+            message: 'No user found for that email. ',
+            title: 'Error',
+            posActionName: 'OK',
+          );
           print('No user found for that email.');
         } else if (e.code == 'wrong-password') {
+          // todo : hide loading
+          DialogUtils.hideDialog(context);
+          // todo : show message
+          DialogUtils.showMessage(
+            context: context,
+            message: 'Wrong password provided for that user.',
+            title: 'Error',
+            posActionName: 'OK',
+          );
           print('Wrong password provided for that user.');
         }
 
       } catch (e) {
-        print(e.toString());
+        // todo : hide loading
+        DialogUtils.hideDialog(context);
+        // todo : show message
+        DialogUtils.showMessage(
+          context: context,
+          message: '${e.toString()}',
+          title: 'Error',
+          posActionName: 'OK',
+        );
       }
     }
   }
