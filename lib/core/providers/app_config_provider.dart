@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/firebase/firebase_utils.dart';
+import 'package:todo_app/core/firebase/firebase_utils.dart';
 import 'package:todo_app/model/task.dart';
 
 class AppConfigProvider extends ChangeNotifier {

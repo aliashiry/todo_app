@@ -1,11 +1,10 @@
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/home/task_list_item/task_list_item.dart';
-import 'package:todo_app/providers/auth_provider.dart';
-import 'package:todo_app/theme/my_theme.dart';
-
-import '../../providers/app_config_provider.dart';
+import 'package:todo_app/core/providers/app_config_provider.dart';
+import 'package:todo_app/core/providers/auth_provider.dart';
+import 'package:todo_app/core/theme/my_theme.dart';
+import 'package:todo_app/layout/widgets/task_list_item.dart';
 
 class TaskListTab extends StatelessWidget {
   const TaskListTab({super.key});

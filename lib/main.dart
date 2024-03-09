@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/home/auth/login_screen/login_screen.dart';
-import 'package:todo_app/home/auth/register_screen/register_screen.dart';
-import 'package:todo_app/providers/app_config_provider.dart';
-import 'package:todo_app/providers/auth_provider.dart';
-import 'package:todo_app/theme/my_theme.dart';
+import 'package:todo_app/core/providers/app_config_provider.dart';
+import 'package:todo_app/core/providers/auth_provider.dart';
+import 'package:todo_app/core/theme/my_theme.dart';
+import 'package:todo_app/pages/auth/login_screen/login_screen.dart';
+import 'package:todo_app/pages/auth/register_screen/register_screen.dart';
+import 'package:todo_app/pages/home/home_screen.dart';
 
-import 'home/home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

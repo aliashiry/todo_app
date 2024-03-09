@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/providers/app_config_provider.dart';
-import 'package:todo_app/theme/my_theme.dart';
+import 'package:todo_app/core/providers/app_config_provider.dart';
+import 'package:todo_app/core/theme/my_theme.dart';
 
 class LanguageBottomSheet extends StatefulWidget {
   const LanguageBottomSheet({super.key});
@@ -66,10 +66,6 @@ class _LanguageBottomSheetState extends State<LanguageBottomSheet> {
 
   Widget getUnselectedItemWidget(String text) {
     return Text(
-      text,
-      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: MyTheme.whiteColor,
-          ),
-    );
+      text, style: Theme.of(context).textTheme.titleSmall);
   }
 }

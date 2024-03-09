@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_app/firebase/firebase_utils.dart';
+import 'package:todo_app/core/firebase/firebase_utils.dart';
+import 'package:todo_app/core/providers/app_config_provider.dart';
+import 'package:todo_app/core/providers/auth_provider.dart';
+import 'package:todo_app/core/theme/my_theme.dart';
 import 'package:todo_app/model/task.dart';
-import 'package:todo_app/providers/app_config_provider.dart';
-import 'package:todo_app/providers/auth_provider.dart';
-import 'package:todo_app/theme/my_theme.dart';
 
 class TaskListItem extends StatefulWidget {
   Task task;

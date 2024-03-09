@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_app/theme/my_theme.dart';
+import 'package:todo_app/core/theme/my_theme.dart';
 
 typedef myValidator = String? Function(String?);
 
