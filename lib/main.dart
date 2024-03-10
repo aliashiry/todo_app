@@ -15,8 +15,6 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await Firebase.initializeApp();
-  // FirebaseFirestore.instance.settings =
-  //     const Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
   await Future.delayed(const Duration(seconds: 1));
   FlutterNativeSplash.remove();
   runApp(MultiProvider(
