@@ -16,5 +16,10 @@
   "task": "المهام",
   "add": "اضافة",
   "description": "الوصف",
-  "task_list": "المهامات"
+  "task_list": "المهامات",
+  "welcome_back": "مرحبًا بعودتك",
+  "forgot_password": " نسيت كلمة السر",
+  "or_create_my_account": "أو إنشاء حساب",
+  "login": "تسجيل الدخول",
+  "create_account": "إنشاء حساب"
 }

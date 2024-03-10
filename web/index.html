@@ -104,6 +104,11 @@
       right: 0;
     }
 
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #060E1E;
+          }
+    }
     </style>
     <script id="splash-screen-script">
     function removeSplashFromWeb() {
@@ -111,7 +116,6 @@
       document.getElementById("splash-branding")?.remove();
       document.body.style.background = "transparent";
     }
-
     </script>
 </head>
 <body>

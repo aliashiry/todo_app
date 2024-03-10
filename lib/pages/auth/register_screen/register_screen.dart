@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/core/firebase/firebase_utils.dart';
 import 'package:todo_app/core/providers/auth_provider.dart';
@@ -54,7 +55,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               },
             ),
             backgroundColor: Colors.transparent,
-            title: Text('Create Account'),
+            title: Text(
+              AppLocalizations.of(context)!.create_account,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             centerTitle: true,
           ),
           body: SingleChildScrollView(
@@ -158,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           register();
                         },
                         child: Text(
-                          'Create Account',
+                          AppLocalizations.of(context)!.create_account,
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
                                     fontSize: 20,

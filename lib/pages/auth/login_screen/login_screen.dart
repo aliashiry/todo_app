@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/core/firebase/firebase_utils.dart';
 import 'package:todo_app/core/providers/auth_provider.dart';
@@ -42,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             title: Text(
-              'Login',
+              AppLocalizations.of(context)!.login,
               style: Theme.of(context).textTheme.titleLarge,
             ),
             centerTitle: true,
@@ -63,7 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   MediaQuery.of(context).size.height * 0.22),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text('Welcome back!',
+                            child: Text(
+                                AppLocalizations.of(context)!.welcome_back,
                                 style: Theme.of(context)
                                     .textTheme
                                     .titleMedium
@@ -120,7 +122,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               },
                               child: Container(
                                 alignment: Alignment.bottomLeft,
-                                child: Text('Forgot password?',
+                                child: Text(
+                                    AppLocalizations.of(context)!
+                                        .forgot_password,
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
@@ -144,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                  // Navigator.pushNamed(context, HomeScreen.routeName);
                                 },
                                 child: Text(
-                                  'Login',
+                                  AppLocalizations.of(context)!.login,
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleMedium
@@ -162,7 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.of(context).pushNamed(RegisterScreen.routeName);
                     },
-                    child: Text('Or Create My Account',
+                    child: Text(
+                        AppLocalizations.of(context)!.or_create_my_account,
                         style:
                             Theme.of(context).textTheme.titleMedium?.copyWith(
                                   color: Colors.grey,

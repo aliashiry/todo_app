@@ -16,5 +16,10 @@
   "add": "Add",
   "task": "Task",
   "description": "Des",
-  "task_list": "Task List"
+  "task_list": "Task List",
+  "welcome_back": "Welcome Back",
+  "forgot_password": "Forgot Password",
+  "or_create_my_account": "Or Create My Account",
+  "login": "Login",
+  "create_account": "Create Account"
 }
