@@ -1,14 +1,6 @@
 flutter_native_splash:
   color: "#ffffff"
   image: assets/images/splash_screen.png
-  image_dark: assets/images/todo_splash_dark.png
-  color_dark: "#060E1E"
-  ios: false
-
   android_12:
     image: assets/images/splash_screen.png
-    image_dark: assets/images/todo_splash_dark.png
-    icon_background_color_dark: "#060E1E"
-    android_gravity: fill
-    icon_background_color: "#ffffff"
-    #color: "#ffffff"
+    color: "#ffffff"
