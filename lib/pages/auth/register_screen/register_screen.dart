@@ -19,16 +19,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController nameController = TextEditingController(text: 'Ali');
+  TextEditingController nameController = TextEditingController();
 
-  TextEditingController emailController =
-      TextEditingController(text: 'ali@gmail.com');
+  TextEditingController emailController = TextEditingController();
 
-  TextEditingController passwordController =
-      TextEditingController(text: '123456');
+  TextEditingController passwordController = TextEditingController();
 
-  TextEditingController confirmPasswordController =
-      TextEditingController(text: '123456');
+  TextEditingController confirmPasswordController = TextEditingController();
 
   var formkey = GlobalKey<FormState>();
   bool obscureText = true;
