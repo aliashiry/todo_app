@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/core/providers/app_config_provider.dart';
 import 'package:todo_app/core/providers/auth_provider.dart';
 import 'package:todo_app/core/theme/my_theme.dart';
-import 'package:todo_app/pages/auth/login_screen/login_screen.dart';
-import 'package:todo_app/pages/auth/register_screen/register_screen.dart';
+import 'package:todo_app/pages/auth/login_screen_view/login_screen.dart';
+import 'package:todo_app/pages/auth/register_screen_view/register_screen.dart';
 import 'package:todo_app/pages/home/home_screen.dart';
 
 void main() async {
